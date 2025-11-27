@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Started - RealHome</title>
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Full site navbar (same as index) -->
+  <nav class="navbar navbar-expand-lg sticky-top" style="background-color:  #0d1a4f;">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" style="font-family: montserrat;" href="properties.html">Jaggo's RealHome</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="properties.html">Properties</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="btn btn-light ms-3" href="get-started.html">Get Started</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="py-5">
+    <div class="container">
+      <div id="authArea"></div>
+      <div id="contentArea" class="d-none">
+        <div class="card p-4 shadow-sm">
+          <h1 id="welcomeTitle">Welcome</h1>
+          <p id="welcomeLead" class="lead">This page is protected — you are signed in.</p>
+          <div id="accountInfo" class="mb-3 text-muted small"></div>
+
+          <!-- Quick nav for signed-in users -->
+          <nav class="mb-3">
+            <div class="btn-group d-flex flex-wrap" role="group" aria-label="Quick nav">
+              <a href="index.html" class="btn btn-outline-primary">Home</a>
+              <a href="properties.html" class="btn btn-outline-primary">Properties</a>
+              <a href="service.html" class="btn btn-outline-primary">Services</a>
+              <a href="contact.html" class="btn btn-outline-primary">Contact</a>
+            </div>
+          </nav>
+
+          <p>Put your protected content here (signup steps, dashboard links, etc.).</p>
+          <div class="d-flex gap-2">
+            <button id="logoutBtn" class="btn btn-outline-secondary">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  (function () {
+    // If user is signed in, redirect them to the home page instead of showing a welcome
+    var current = localStorage.getItem('realhome_current')
+    if (current) {
+      window.location.href = 'index.html'
+      return
+    }
+
+    // Not signed in — send to login page and request return to home after login
+    var next = encodeURIComponent('index.html')
+    window.location.href = 'login.html?next=' + next
+  })()
+  </script>
+</body>
+</html>

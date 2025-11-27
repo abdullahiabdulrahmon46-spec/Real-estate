@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - RealHome</title>
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: linear-gradient(180deg,#f3f6fb,#ffffff); background-image: url(images/buiding1.jpg);">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <div class="text-center mb-3">
+              <img src="images/logo.png" alt="RealHome" style="height:48px; width:auto; object-fit:contain;" onerror="this.style.display='none'">
+              <h3 class="mt-2 mb-0">RealHome</h3>
+              <p class="text-muted small">Sign in or create an account to continue</p>
+            </div>
+
+            <div id="alertArea"></div>
+
+            <div class="d-flex gap-2 mb-3 justify-content-center">
+              <button id="showLoginBtn" type="button" class="btn btn-outline-primary active flex-fill">Sign in</button>
+              <button id="showRegisterBtn" type="button" class="btn btn-outline-secondary flex-fill">Register</button>
+            </div>
+
+            <!-- Login form -->
+            <form id="loginForm" class="auth-form">
+              <div class="mb-3">
+                <label for="loginUsername" class="form-label visually-hidden">Email or username</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  <input type="text" id="loginUsername" class="form-control" placeholder="Email or username" required autofocus>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="loginPassword" class="form-label visually-hidden">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  <input type="password" id="loginPassword" class="form-control" placeholder="Password" required>
+                  <button type="button" id="toggleLoginPwd" class="btn btn-outline-secondary" aria-label="Show password"><i class="fa fa-eye"></i></button>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                  <label class="form-check-label small" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#" class="small">Forgot?</a>
+              </div>
+              <div class="d-grid mb-2">
+                <button id="loginSubmit" type="submit" class="btn btn-primary">Sign in</button>
+              </div>
+            </form>
+
+            <!-- Registration form (hidden by default) -->
+            <form id="registerForm" class="auth-form d-none">
+              <div class="mb-3">
+                <label for="regUsername" class="form-label visually-hidden">Username or Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                  <input type="text" id="regUsername" class="form-control" placeholder="Email or username" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="regDisplay" class="form-label visually-hidden">Display name</label>
+                <input type="text" id="regDisplay" class="form-control" placeholder="Your name" required>
+              </div>
+              <div class="mb-3">
+                <label for="regPassword" class="form-label visually-hidden">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  <input type="password" id="regPassword" class="form-control" placeholder="Choose a password" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="regPasswordConfirm" class="form-label visually-hidden">Confirm password</label>
+                <input type="password" id="regPasswordConfirm" class="form-control" placeholder="Confirm password" required>
+              </div>
+              <div class="d-grid mb-2">
+                <button id="regSubmit" type="submit" class="btn btn-success">Create account</button>
+              </div>
+            </form>
+
+            <div class="text-center mt-3 small text-muted">Accounts are stored locally in your browser (localStorage). This is convenient for demos but not secure for production.</div>
+          </div>
+        </div>
+        <p class="text-center mt-3 small text-muted">© 2025 RealHome</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+// Client-side account storage using salted SHA-256 (DEMO ONLY)
+// WARNING: This is not secure for protecting sensitive data. Use server-side auth for production.
+
+(function () {
+  // helpers
+  function toHex(buffer) {
+    return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('')
+  }
+
+  function randomSalt(len) {
+    var buf = new Uint8Array(len || 16)
+    crypto.getRandomValues(buf)
+    return btoa(String.fromCharCode.apply(null, buf))
+  }
+
+  async function hashWithSalt(password, salt) {
+    var enc = new TextEncoder()
+    // combine salt and password
+    var data = enc.encode(salt + password)
+    var hashBuffer = await crypto.subtle.digest('SHA-256', data)
+    return toHex(hashBuffer)
+  }
+
+  function loadUsers() {
+    try {
+      return JSON.parse(localStorage.getItem('realhome_users') || '{}')
+    } catch (e) { return {} }
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem('realhome_users', JSON.stringify(users))
+  }
+
+  // UI elements
+  var alertArea = document.getElementById('alertArea')
+  var loginForm = document.getElementById('loginForm')
+  var registerForm = document.getElementById('registerForm')
+  var showLoginBtn = document.getElementById('showLoginBtn')
+  var showRegisterBtn = document.getElementById('showRegisterBtn')
+  var loginSubmit = document.getElementById('loginSubmit')
+  var regSubmit = document.getElementById('regSubmit')
+
+  function showAlert(html, type) {
+    alertArea.innerHTML = '<div class="alert alert-' + (type||'info') + '" role="alert">' + html + '</div>'
+  }
+
+  // toggle forms
+  showLoginBtn.addEventListener('click', function () {
+    showLoginBtn.classList.add('active')
+    showRegisterBtn.classList.remove('active')
+    loginForm.classList.remove('d-none')
+    registerForm.classList.add('d-none')
+    alertArea.innerHTML = ''
+  })
+  showRegisterBtn.addEventListener('click', function () {
+    showRegisterBtn.classList.add('active')
+    showLoginBtn.classList.remove('active')
+    registerForm.classList.remove('d-none')
+    loginForm.classList.add('d-none')
+    alertArea.innerHTML = ''
+  })
+
+  // handle login
+  loginForm.addEventListener('submit', async function (e) {
+    e.preventDefault()
+    alertArea.innerHTML = ''
+    var username = (document.getElementById('loginUsername').value || '').trim()
+    var password = (document.getElementById('loginPassword').value || '').trim()
+    if (!username || !password) { showAlert('Please enter username and password', 'danger'); return }
+
+    loginSubmit.disabled = true
+
+    try {
+      var users = loadUsers()
+      var user = users[username]
+      if (!user) { showAlert('No account found for that username. Please register first.', 'danger'); return }
+      var hash = await hashWithSalt(password, user.salt)
+      if (hash === user.hash) {
+        localStorage.setItem('realhome_current', username)
+        showAlert('Login successful — redirecting...', 'success')
+        var params = new URLSearchParams(window.location.search)
+        // default to home page after login
+        var next = params.get('next') || 'index.html'
+        setTimeout(function () { window.location.href = next }, 600)
+      } else {
+        showAlert('Invalid password. Please try again.', 'danger')
+      }
+    } catch (err) {
+      showAlert('An error occurred. Please try again.', 'danger')
+      console.error(err)
+    } finally {
+      loginSubmit.disabled = false
+    }
+  })
+
+  // handle registration
+  registerForm.addEventListener('submit', async function (e) {
+    e.preventDefault()
+    alertArea.innerHTML = ''
+    var username = (document.getElementById('regUsername').value || '').trim()
+    var display = (document.getElementById('regDisplay').value || '').trim()
+    var password = (document.getElementById('regPassword').value || '').trim()
+    var confirm = (document.getElementById('regPasswordConfirm').value || '').trim()
+
+    if (!username || !display || !password) { showAlert('Please fill all fields', 'danger'); return }
+    if (password !== confirm) { showAlert('Passwords do not match', 'danger'); return }
+
+    regSubmit.disabled = true
+
+    try {
+      var users = loadUsers()
+      if (users[username]) { showAlert('An account with that username already exists. Choose another.', 'danger'); return }
+      var salt = randomSalt(16)
+      var hash = await hashWithSalt(password, salt)
+  users[username] = { salt: salt, hash: hash, display: display }
+  saveUsers(users)
+  localStorage.setItem('realhome_current', username)
+  showAlert('Account created — signing in...', 'success')
+  // allow optional ?next= param, default to home
+  var params = new URLSearchParams(window.location.search)
+  var next = params.get('next') || 'index.html'
+  setTimeout(function () { window.location.href = next }, 700)
+    } catch (err) {
+      showAlert('Could not create account. Try again.', 'danger')
+      console.error(err)
+    } finally {
+      regSubmit.disabled = false
+    }
+  })
+
+  // initialize: show login view
+  showLoginBtn.click()
+
+  // password toggle for login form
+  var toggleLogin = document.getElementById('toggleLoginPwd')
+  if (toggleLogin) {
+    toggleLogin.addEventListener('click', function () {
+      var p = document.getElementById('loginPassword')
+      if (p) {
+        if (p.type === 'password') { p.type = 'text'; toggleLogin.innerHTML = '<i class="fa fa-eye-slash"></i>'; }
+        else { p.type = 'password'; toggleLogin.innerHTML = '<i class="fa fa-eye"></i>'; }
+      }
+    })
+  }
+
+})()
+</script>
+</body>
+</html>

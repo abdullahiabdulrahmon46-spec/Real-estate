@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | RealHome</title>
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      background: #f8f9fc;
+      color: #333;
+    }
+
+    header {
+      background-color: #0d1a4f;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .filter-section {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    select {
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .property-container {
+      display: grid;
+      /* fixed card width so single cards keep their size; grid centers items */
+      grid-template-columns: repeat(auto-fill, 320px);
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .property-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      width: 320px;        /* fixed width */
+      height: 420px;       /* fixed height to keep uniform size */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .property-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .property-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      flex: 0 0 auto;
+    }
+
+    .property-info {
+      padding: 15px;
+      flex: 1 1 auto;
+      overflow: auto;
+    }
+
+    .property-info h3 {
+      margin: 0 0 10px;
+      color: #0d1a4f;
+    }
+
+    .property-info p {
+      margin: 5px 0;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .price {
+      font-weight: bold;
+      color: #0d1a4f;
+      margin-top: 10px;
+    }
+    /* Card badge and specs */
+    .property-badge{
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      background: rgba(13,26,79,0.95);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight:600;
+    }
+    .card-top { position: relative }
+    .card-actions { position: absolute; right: 10px; top: 10px }
+    .specs { display:flex; gap:12px; font-size:0.9rem; color:#555; margin-top:10px }
+    .specs .spec { display:flex; gap:6px; align-items:center }
+    .property-footer { padding:12px 15px; border-top:1px solid #f1f1f1; display:flex; justify-content:space-between; align-items:center; gap:12px; flex: 0 0 auto; }
+    .property-footer .agent { font-size:0.9rem; color:#666 }
+    .property-footer .actions { display:flex; gap:8px }
+    .property-footer .actions .btn { padding: .45rem .75rem; border-radius: .45rem; }
+    .property-footer .actions .btn-primary { background: linear-gradient(90deg,#18377f,#0d1a4f); border-color: transparent; }
+    @media (max-width:575.98px) {
+      .property-container { grid-template-columns: 1fr; justify-content: stretch; }
+      .property-card { width: 100%; height: auto; }
+      .property-card img { height: 160px; }
+      .property-footer { flex-direction: column; align-items: stretch; gap:8px }
+      .property-footer .actions { width:100% }
+      .property-footer .actions .btn { width:100%; display:block }
+      .property-footer .agent { text-align:left }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #0d1a4f;">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" style="font-family: montserrat;" href="index.html">Jaggo's RealHome</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link text-white active" href="properties.html">Properties</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="btn btn-light ms-3" href="get-started.html">Get Started</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+
+
+    <section class="page-heading" style="max-width:1200px; margin:1.5rem auto 0; padding:1rem 1.25rem; background-color:#0d1a4f; color:#fff; border-radius:10px; text-align:center; padding: 30px;">
+      <h1 style="margin:0; font-size:1.75rem; font-weight:700;">Explore Our Properties</h1>
+    </section>
+
+  <section class="filter-section">
+    <select id="filter" onchange="filterProperties()">
+      <option value="all" style="font-size: small;">All Properties</option>
+      <option value="rent"  style="font-size: small;">For Rent</option>
+      <option value="sale"  style="font-size: small;">For Sale</option>
+      <option value="lease"  style="font-size: small;">For Lease</option>
+    </select>
+  </section>
+
+  <section class="property-container" id="propertyContainer">
+    <!-- Properties will be rendered here from admin (localStorage) -->
+  </section>
+
+  <script>
+    function filterProperties() {
+      const filterValue = document.getElementById('filter').value;
+      const cards = document.querySelectorAll('.property-card');
+
+      cards.forEach(card => {
+        if (filterValue === 'all' || card.dataset.category === filterValue) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+  <script>
+    // Card interactions: favorite toggle
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      // handle clicks on heart icon buttons
+      if (t.closest && t.closest('.card-actions')) {
+        var btn = t.closest('.card-actions').querySelector('button')
+        if (!btn) return
+        btn.classList.toggle('btn-danger')
+        btn.classList.toggle('btn-light')
+        var icon = btn.querySelector('i')
+        if (icon) icon.classList.toggle('fas')
+        // optional: mark favorite in localStorage (not implemented persistently)
+      }
+    })
+  </script>
+  
+
+
+  
+
+  
+  <footer style="background-color: rgb(6, 6, 29); text-align: center; padding: 10px 0; color: white;">
+    <p>&copy; 2025 RealHome. All rights reserved.</p>
+  </footer>
+
+  <!-- Bottom navigation (mobile) -->
+  <nav class="bottom-nav d-lg-none" aria-label="Bottom navigation">
+    <a href="index.html" class="bn-item" data-key="home" title="Home">
+      <i class="fa fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="properties.html" class="bn-item" data-key="portfolio" title="Properties">
+      <i class="fa fa-building"></i>
+      <span>Properties</span>
+    </a>
+    <a href="service.html" class="bn-item" data-key="services" title="Services">
+      <i class="fa fa-concierge-bell"></i>
+      <span>Services</span>
+    </a>
+    <a href="about.html" class="bn-item" data-key="about" title="About">
+      <i class="fa fa-info-circle"></i>
+      <span>About</span>
+    </a>
+    <a href="contact.html" class="bn-item" data-key="contact" title="Contact">
+      <i class="fa fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </nav>
+
+  <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="site.js"></script>
+  <!-- Render stored properties (added via admin) -->
+  <script>
+    (function () {
+      function escapeHtml(text) {
+        if (text === undefined || text === null) return '';
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function removeStoredProperty(id) {
+        const stored = JSON.parse(localStorage.getItem('properties') || '[]');
+        const filtered = stored.filter(p => p.id !== id);
+        localStorage.setItem('properties', JSON.stringify(filtered));
+        const el = document.getElementById('stored-' + id);
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      }
+
+      function sendInterest(propertyName) {
+        const phoneNumber = "2348149377559";
+        const message = `Hello! I'm interested in the property: ${propertyName}`;
+        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappURL, '_blank');
+      }
+
+      function renderStoredProperties() {
+        const container = document.getElementById('propertyContainer');
+        if (!container) return;
+        const stored = JSON.parse(localStorage.getItem('properties') || '[]');
+        // Append stored properties after existing static ones
+        stored.forEach(prop => {
+          if (!prop || !prop.id) return;
+          if (document.getElementById('stored-' + prop.id)) return; // skip if already added
+
+          const card = document.createElement('div');
+          card.className = 'property-card';
+          card.id = 'stored-' + prop.id;
+          card.dataset.category = (prop.listingType || '').toLowerCase().includes('rent') ? 'rent' : ((prop.listingType || '').toLowerCase().includes('sale') ? 'sale' : (prop.listingType || '').toLowerCase());
+
+          const imgSrc = prop.image || 'images/bungalow.jpg';
+          card.innerHTML = `
+            <div class="card-top">
+              <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(prop.name || prop.title || 'Property')}">
+              <div class="property-badge">${escapeHtml(prop.listingType || 'Listing')}</div>
+              <div class="card-actions">
+                <button class="btn btn-sm btn-light" onclick="sendInterest('${escapeHtml(prop.name || prop.title || '')}')"><i class="fa fa-heart"></i></button>
+              </div>
+            </div>
+            <div class="property-info">
+              <h3>${escapeHtml(prop.name || prop.title || '')}</h3>
+              <p>${escapeHtml(prop.location || '')}</p>
+              <div class="specs">
+                <div class="spec"><i class="fa fa-bed"></i> ${escapeHtml(prop.bedrooms || '')}</div>
+                <div class="spec"><i class="fa fa-bath"></i> ${escapeHtml(prop.toilets || prop.bathrooms || '')}</div>
+              </div>
+              <p class="price">${prop.price ? '₦' + escapeHtml(prop.price) : ''}</p>
+            </div>
+            <div class="property-footer">
+              <div class="actions">
+                <a href="https://wa.me/+2348149377559" class="btn btn-primary"><i class="fa fa-phone me-2"></i>Contact Agent</a>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(card);
+          // make Contact Agent include property name for admin-added items
+          const contactAnchor = card.querySelector('.property-footer .actions a.btn-primary');
+          if (contactAnchor) {
+            contactAnchor.addEventListener('click', function (ev) {
+              ev.preventDefault();
+              sendInterest(prop.name || prop.title || 'this property');
+            });
+          }
+        });
+      }
+
+      // expose remove and sendInterest to global scope so inline handlers can call them
+      window.removeStoredProperty = removeStoredProperty;
+      window.sendInterest = sendInterest;
+
+      document.addEventListener('DOMContentLoaded', renderStoredProperties);
+    })();
+  </script>
+</body>
+</html>

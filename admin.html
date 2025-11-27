@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> jaggosHome</title>
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="fontawesome-free-7.0.1-web/css/all.min.css">
+  <style>
+    :root{--bg:#f4f6f9;--sidebar:#16213e;--accent:#00a8ff}
+    body{font-family:montserrat; background:var(--bg);}
+    .sidebar{width:240px;background:var(--sidebar);color:#fff;height:100vh;position:fixed;left:0;top:0;padding:20px}
+    .sidebar h3{color:#fff;margin-bottom:1rem}
+    .sidebar a{display:flex;align-items:center;gap:10px;color:#cfe6ff;padding:10px;border-radius:6px;text-decoration:none}
+    .sidebar a.active, .sidebar a:hover{background:rgba(255,255,255,0.04)}
+    .main{margin-left:260px;padding:28px}
+    .form-card{max-width:900px}
+    label{font-weight:600}
+    .success{display:none}
+    
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <h3><i class="fa fa-building"></i>  Jaggos Home</h3>
+    <nav class="nav flex-column">
+      <a class="nav-link active" href="#"><i class="fa fa-plus-circle"></i> Add Property</a>
+      <a class="nav-link" href="properties.html"><i class="fa fa-list"></i> View Properties</a>
+      <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
+    </nav>
+  </aside>
+
+  <!-- authentication overlay (set password or login) -->
+  <div id="authOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;">
+    <div style="background:#fff;padding:24px;border-radius:8px;max-width:420px;width:100%;box-shadow:0 6px 30px rgba(0,0,0,0.3);">
+      <h4 id="authTitle">Admin Login</h4>
+      <div id="setPasswordArea" style="display:none;">
+        <p>Create an admin password for this dashboard (stored locally).</p>
+        <input id="newPass" type="password" class="form-control mb-2" placeholder="Enter new password">
+        <input id="confirmPass" type="password" class="form-control mb-2" placeholder="Confirm password">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="showSetPass">
+          <label class="form-check-label" for="showSetPass">Show password</label>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="savePassBtn" class="btn btn-primary">Save password</button>
+        </div>
+        <div id="setPassMsg" class="mt-2 text-danger" style="display:none"></div>
+      </div>
+      <div id="loginArea" style="display:none;">
+        <p>Enter admin password to continue.</p>
+        <input id="loginPass" type="password" class="form-control mb-2" placeholder="Password">
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="showLoginPass">
+          <label class="form-check-label" for="showLoginPass">Show password</label>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="loginBtn" class="btn btn-primary">Login</button>
+        </div>
+        <div id="loginMsg" class="mt-2 text-danger" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main" id="adminContent" style="display:none">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Add New Property</h2>
+      <div>
+        <a class="btn btn-outline-primary" href="properties.html">Open Properties</a>
+      </div>
+    </div>
+
+    <div class="card p-4 form-card">
+      <h5 class="mb-3">Property details</h5>
+      <form id="adminForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="pName">Property name</label>
+            <input id="pName" class="form-control" required>
+          </div>
+            <div class="col-md-6 mb-3">
+            <label for="pPrice">Price (₦)</label>
+            <input id="pPrice" type="text" class="form-control" placeholder="e.g., 1,000,000" required>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="pLocation">Location</label>
+            <input id="pLocation" class="form-control" required>
+            </div>
+            <div class="col-md-3 mb-3">
+            <label for="pType">Property Type</label>
+            <select id="pType" class="form-control" required>
+              <option value="">Select Type</option>
+              <option value="sale">For Sale</option>
+              <option value="rent">For Rent</option>
+              <option value="lease">For Lease</option>
+            </select>
+            </div>
+            <div class="col-md-3 mb-3">
+            <label for="pBedrooms">Bedrooms</label>
+            <input id="pBedrooms" type="number" min="0" class="form-control" required>
+            </div>
+          <div class="col-md-3 mb-3">
+            <label for="pToilets">Toilets</label>
+            <input id="pToilets" type="number" min="0" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="pImage">Choose image from your device (optional)</label>
+          <input id="pImage" type="file" accept="image/*" class="form-control">
+          <div class="form-text text-muted">Select an image from your gallery. Recommended under 2.5MB for storage.</div>
+          <img id="imgPreview" alt="preview" style="max-width:260px;display:none;margin-top:8px;border-radius:6px">
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Add property</button>
+          <button type="button" id="clearBtn" class="btn btn-outline-secondary">Clear</button>
+          <div class="ms-auto text-success success" id="succ">Property saved ✓</div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Stored properties (admin view) -->
+    <div class="card p-4 mt-4">
+      <h5 class="mb-3">Stored properties</h5>
+      <div id="adminPropertyList">No properties yet.</div>
+    </div>
+  </main>
+
+  <script>
+    // --- Authentication helpers ---
+    async function hashPassword(password) {
+      const enc = new TextEncoder();
+      const buf = await crypto.subtle.digest('SHA-256', enc.encode(password));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function showOverlay(mode) {
+      const overlay = document.getElementById('authOverlay');
+      const setArea = document.getElementById('setPasswordArea');
+      const loginArea = document.getElementById('loginArea');
+      const title = document.getElementById('authTitle');
+      overlay.style.display = 'flex';
+      if (mode === 'set') { setArea.style.display = 'block'; loginArea.style.display = 'none'; title.textContent = 'Set Admin Password'; }
+      else { setArea.style.display = 'none'; loginArea.style.display = 'block'; title.textContent = 'Admin Login'; }
+    }
+
+    function hideOverlay() {
+      const overlay = document.getElementById('authOverlay');
+      overlay.style.display = 'none';
+    }
+
+    async function initAuth() {
+      const storedHash = localStorage.getItem('adminPasswordHash');
+      const authenticated = sessionStorage.getItem('adminAuthenticated');
+      if (authenticated === 'true') {
+        // already authenticated this session
+        document.getElementById('adminContent').style.display = '';
+        hideOverlay();
+        renderStoredPropertiesAdmin();
+        return;
+      }
+
+      if (!storedHash) {
+        // ask user to set password
+        showOverlay('set');
+      } else {
+        showOverlay('login');
+      }
+    }
+
+    document.getElementById('savePassBtn').addEventListener('click', async function(){
+      const p = document.getElementById('newPass').value;
+      const c = document.getElementById('confirmPass').value;
+      const msg = document.getElementById('setPassMsg');
+      if (!p || p.length < 4) { msg.style.display='block'; msg.textContent='Password must be at least 4 characters.'; return; }
+      if (p !== c) { msg.style.display='block'; msg.textContent='Passwords do not match.'; return; }
+      const h = await hashPassword(p);
+      localStorage.setItem('adminPasswordHash', h);
+      sessionStorage.setItem('adminAuthenticated','true');
+      msg.style.display='none';
+      document.getElementById('adminContent').style.display = '';
+      hideOverlay();
+      renderStoredPropertiesAdmin();
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', async function(){
+      const p = document.getElementById('loginPass').value;
+      const msg = document.getElementById('loginMsg');
+      if (!p) { msg.style.display='block'; msg.textContent='Enter password.'; return; }
+      const h = await hashPassword(p);
+      const stored = localStorage.getItem('adminPasswordHash');
+      if (h === stored) {
+        sessionStorage.setItem('adminAuthenticated','true');
+        msg.style.display='none';
+        document.getElementById('adminContent').style.display = '';
+        hideOverlay();
+        renderStoredPropertiesAdmin();
+      } else {
+        msg.style.display='block'; msg.textContent='Incorrect password.';
+      }
+    });
+
+    // show/hide password toggles for set-password and login areas
+    const showSet = document.getElementById('showSetPass');
+    if (showSet) {
+      showSet.addEventListener('change', function(){
+        const t = this.checked ? 'text' : 'password';
+        const np = document.getElementById('newPass');
+        const cp = document.getElementById('confirmPass');
+        if (np) np.type = t;
+        if (cp) cp.type = t;
+      });
+    }
+    const showLogin = document.getElementById('showLoginPass');
+    if (showLogin) {
+      showLogin.addEventListener('change', function(){
+        const lp = document.getElementById('loginPass');
+        if (lp) lp.type = this.checked ? 'text' : 'password';
+      });
+    }
+
+    // Logout helper: clear session only (password remains) and show login overlay
+    const logoutLink = document.querySelector('.sidebar .nav-link[href="#"]');
+    // create explicit logout button
+    const logoutBtn = document.createElement('a');
+    logoutBtn.href = '#logout'; logoutBtn.className='nav-link'; logoutBtn.innerHTML = '<i class="fa fa-sign-out-alt"></i> Logout';
+    logoutBtn.addEventListener('click', function(e){ e.preventDefault(); sessionStorage.removeItem('adminAuthenticated'); showOverlay('login'); document.getElementById('adminContent').style.display='none'; });
+    document.querySelector('.sidebar nav').appendChild(logoutBtn);
+
+    // initialize authentication
+    initAuth();
+
+    // --- end auth helpers ---
+    // image preview and read file as data URL so it can be saved to localStorage
+    const imgInput = document.getElementById('pImage');
+    const imgPreview = document.getElementById('imgPreview');
+    let selectedImageDataUrl = '';
+    imgInput.addEventListener('change', ()=>{
+      const file = imgInput.files && imgInput.files[0];
+      if (!file) {
+        selectedImageDataUrl = '';
+        imgPreview.src = '';
+        imgPreview.style.display = 'none';
+        return;
+      }
+
+      // warn on large files
+      if (file.size > 2.5 * 1024 * 1024) {
+        // non-blocking warning
+        if (!confirm('The selected image is larger than 2.5MB and may not be saved properly in your browser storage. Continue?')) {
+          imgInput.value = '';
+          return;
+        }
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        selectedImageDataUrl = e.target.result; // data:image/...;base64,...
+        imgPreview.src = selectedImageDataUrl;
+        imgPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // render list in admin
+    function escapeHtml(text) {
+      if (text === undefined || text === null) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderStoredPropertiesAdmin() {
+      const list = JSON.parse(localStorage.getItem('properties') || '[]');
+      const container = document.getElementById('adminPropertyList');
+      if (!container) return;
+      if (!list.length) { container.innerHTML = 'No properties yet.'; return; }
+      container.innerHTML = '';
+      list.slice().reverse().forEach(prop => {
+        const wrap = document.createElement('div');
+        wrap.className = 'd-flex gap-3 align-items-start mb-3 p-2 border rounded';
+        const img = document.createElement('img');
+        img.style.width = '120px';
+        img.style.height = '80px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '6px';
+        img.src = prop.image || 'images/bungalow.jpg';
+        const info = document.createElement('div');
+        info.style.flex = '1';
+        info.innerHTML = `<strong>${escapeHtml(prop.name || '')}</strong> <span class="badge bg-secondary ms-2">${escapeHtml(prop.pType || prop.listingType || '')}</span>
+          <div>${escapeHtml(prop.location || '')} — ₦${escapeHtml(prop.price || '')}</div>
+          <div class="text-muted">Beds: ${escapeHtml(prop.bedrooms||'')} • Toilets: ${escapeHtml(prop.toilets||'')}</div>`;
+        const actions = document.createElement('div');
+        actions.innerHTML = `<button class="btn btn-sm btn-danger">Remove</button>`;
+        actions.querySelector('button').addEventListener('click', ()=>{ removeStoredPropertyAdmin(prop.id); });
+        wrap.appendChild(img);
+        wrap.appendChild(info);
+        wrap.appendChild(actions);
+        container.appendChild(wrap);
+      });
+    }
+
+    function removeStoredPropertyAdmin(id) {
+      const stored = JSON.parse(localStorage.getItem('properties') || '[]');
+      const filtered = stored.filter(p => p.id !== id);
+      localStorage.setItem('properties', JSON.stringify(filtered));
+      renderStoredPropertiesAdmin();
+    }
+
+    // submit handler - save to localStorage and update admin list
+    document.getElementById('adminForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const prop = {
+        id: Date.now(),
+        name: document.getElementById('pName').value.trim(),
+        price: document.getElementById('pPrice').value.trim(),
+        location: document.getElementById('pLocation').value.trim(),
+        bedrooms: document.getElementById('pBedrooms').value,
+        toilets: document.getElementById('pToilets').value,
+        pType: document.getElementById('pType').value || '',
+        listingType: document.getElementById('pType').value || '',
+        // if user selected a file we saved it as a data URL; otherwise empty string
+        image: selectedImageDataUrl || ''
+      };
+      const list = JSON.parse(localStorage.getItem('properties') || '[]');
+      list.push(prop);
+      localStorage.setItem('properties', JSON.stringify(list));
+      // feedback and update list
+      const succ = document.getElementById('succ');
+      succ.style.display='inline-block';
+      setTimeout(()=>{ succ.style.display='none'; },700);
+      // reset form and clear preview
+      document.getElementById('adminForm').reset(); selectedImageDataUrl = ''; imgPreview.style.display='none';
+      renderStoredPropertiesAdmin();
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', ()=>{ document.getElementById('adminForm').reset(); imgPreview.style.display='none'; });
+
+  // initial render
+  document.addEventListener('DOMContentLoaded', renderStoredPropertiesAdmin);
+  </script>
+
+</body>
+</html>

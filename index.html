@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RealHome | Your Dream Home Awaits</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+     <link rel="stylesheet" href="css/all.min.css">
+  <style>
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    .hero {
+      background: linear-gradient(rgba(13,26,79,0.7), rgba(13,26,79,0.7)), url(images/buiding1.jpg) center/cover no-repeat;
+      
+      
+      color: white;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    .property-card img {
+      height: 200px;
+      object-fit: cover;
+    }
+    footer {
+      background-color: #0d1a4f;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px;
+    }
+     .hero-slider-section .carousel,
+  .hero-slider-section .carousel-inner,
+  .hero-slider-section .carousel-item,
+  .hero-slider-section .hero-slide-bg {
+    height: 100%;
+
+  }
+  .hero-slider-section .hero-slide-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+  }
+  .hero-slider-section .bg-dark.bg-opacity-50 {
+  z-index: 2;
+  }
+  
+
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top" style="background-color:  #0d1a4f;">
+    <div class="container">
+      <a class="navbar-brand text-white fw-bold" style="font-family: montserrat;" href="properties.html">Jaggo's RealHome</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link text-white active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="properties.html">Properties</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="btn btn-light ms-3" href="get-started.html">Get Started</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+<!-- Hero Section with Image Slider -->
+  <section class="bg-light text-center text-white position-relative hero-slider-section" style="height: 90vh; overflow: hidden;">
+    <div id="heroCarousel" class="carousel slide h-100" data-bs-ride="carousel" data-bs-interval="4000">
+      <div class="carousel-inner h-100">
+        <div class="carousel-item active h-100">
+          <img src="images/buiding1.jpg" class="w-100 h-100" style="object-fit: cover;" alt="Building 1">
+        </div>
+        <div class="carousel-item h-100">
+          <img src="images/buliding 2.jpg" class="w-100 h-100" style="object-fit: cover;" alt="Building 2">
+        </div>
+        <div class="carousel-item h-100">
+          <img src="images/building 3.jpg" class="w-100 h-100" style="object-fit: cover;" alt="Building 3">
+        </div>
+      </div>
+      <!-- Carousel controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+    <div class="bg-dark bg-opacity-50 w-100 h-100 position-absolute top-0 start-0 d-flex align-items-center justify-content-center flex-column">
+      <h1 class="display-4 fw-bold">Find Your Dream Property</h1>
+       <p>Explore the best properties with RealHome — where comfort meets luxury.</p>
+      <a href="properties.html  " class="btn btn-light mt-3">Browse Properties</a>
+    </div>
+  </section>
+  <section class="py-5" style="max-width: 100%;">
+    <div class="container" style="max-width: 100%;"></div>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <h2 class="text-center mb-4"></h2>
+          <div class="ratio ratio-16x9">
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;"></div>
+              <video id="propertyVideo" src="real estate videos.mp4" class="w-100" autoplay muted playsinline preload="metadata" style="width: 100%; height: 100%; max-width: 100%; pointer-events: none; box-shadow: 0 4px 24px rgba(0,0,0,0.15);"></video>
+            </div>
+            <script>
+              // Autoplay and play for exactly 30 seconds, starting from 10 seconds — then replay the segment
+              const video = document.getElementById('propertyVideo');
+              video.controls = false;
+              video.muted = true;
+              video.playsInline = true;
+              video.tabIndex = -1;
+              video.addEventListener('contextmenu', e => e.preventDefault());
+
+              const START_TIME = 10; // seconds
+              const PLAY_DURATION = 30 * 1000; // milliseconds
+              let segmentTimeout = null;
+
+              function clearSegmentTimeout() {
+              if (segmentTimeout) {
+                clearTimeout(segmentTimeout);
+                segmentTimeout = null;
+              }
+              }
+
+              // Schedule the end of the current segment and restart playback immediately (replay)
+              function scheduleRestart() {
+              clearSegmentTimeout();
+              segmentTimeout = setTimeout(async () => {
+                try {
+                video.pause();
+                // snap back to start of segment and replay
+                video.currentTime = START_TIME;
+                const p = video.play();
+                if (p && typeof p.then === 'function') {
+                  await p.catch(() => { /* autoplay blocked or interrupted */ });
+                }
+                // schedule next restart after this segment plays
+                scheduleRestart();
+                } catch (e) {
+                // ignore errors (e.g. invalid currentTime)
+                }
+              }, PLAY_DURATION);
+              }
+
+              // Start playback segment once metadata is loaded (so currentTime can be set reliably)
+              video.addEventListener('loadedmetadata', () => {
+              try { video.currentTime = START_TIME; } catch(e) {}
+              const playPromise = video.play();
+              if (playPromise && typeof playPromise.then === 'function') {
+                playPromise.then(() => scheduleRestart()).catch(() => {/* autoplay blocked */});
+              } else {
+                scheduleRestart();
+              }
+              });
+
+              // If user interaction or other code causes play again, ensure the restart timer is reset
+              video.addEventListener('play', scheduleRestart);
+
+              // Prevent seeking by snapping back to start if user attempts to seek into the segment while it's running
+              video.addEventListener('seeking', () => {
+              try {
+                const segEnd = START_TIME + (PLAY_DURATION / 1000);
+                if (video.currentTime > START_TIME && video.currentTime < segEnd) {
+                video.currentTime = START_TIME;
+                }
+              } catch(e) {}
+              });
+
+              // Clean up timer if video is paused/ended (will be restarted on next play)
+              video.addEventListener('pause', () => { clearSegmentTimeout(); });
+              video.addEventListener('ended', () => { clearSegmentTimeout(); });
+
+              // Optional: when page is hidden (user switches tab), pause and clear timer
+              document.addEventListener('visibilitychange', () => {
+              if (document.hidden) {
+                try { video.pause(); } catch(e) {}
+                clearSegmentTimeout();
+              } else {
+                // resume segment when returning
+                try {
+                video.currentTime = START_TIME;
+                const p = video.play();
+                if (p && typeof p.then === 'function') {
+                  p.then(() => scheduleRestart()).catch(() => {});
+                } else {
+                  scheduleRestart();
+                }
+                } catch(e) {}
+              }
+              });
+            </script>
+            </div>
+          </div>
+          </div>
+        </div>
+        </section>
+
+  <!-- ✅ Featured Properties -->
+  <section class="py-5"></section>
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4" style="color:#fff; padding: 20px; background-color: #001f3f;">Featured Properties</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card property-card shadow-sm">
+            <img src="images/bungalow.jpg" class="card-img-top" alt="Property 1">
+            <div class="card-body">
+              <h5 class="card-title">Bungalow</h5>
+              <p class="card-text text-muted">₦250,000,000 — Lagos</p>
+              <a href="contact.html" class="btn btn-outline-primary"> Contact US</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card property-card shadow-sm">
+            <img src="images/villa.jpg" class="card-img-top" alt="Property 2">
+            <div class="card-body">
+              <h5 class="card-title">Modern Apartment</h5>
+              <p class="card-text text-muted">₦85,000,000 — Abuja</p>
+              <a href="contact.html" class="btn btn-outline-primary"> Contact US</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card property-card shadow-sm">
+            <img src="images/lands 1.jpg" class="card-img-top" alt="Property 3">
+            <div class="card-body">
+              <h5 class="card-title">lands</h5>
+              <p class="card-text text-muted">₦12,000,000</p>
+                <a href="contact.html" class="btn btn-outline-primary"> Contact US</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="Services">
+  <!-- ✅ Services Section -->
+  <section class="py-5" style="background: linear-gradient(135deg, rgba(13,26,79,0.95), rgba(1, 10, 22, 0.95)), url('images/services-bg.jpg') center/cover fixed no-repeat; color: #fff;">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4 text-white">Our Services</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Property Buying</h5>
+              <p class="card-text">We help you find and purchase your dream property with ease.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Property Selling</h5>
+              <p class="card-text">Get the best value for your property with our expert selling services.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Property Management</h5>
+              <p class="card-text">Comprehensive management services to maintain and enhance your property value.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional three cards -->
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Valuation Services</h5>
+              <p class="card-text">Professional property valuations to help you price accurately and make informed decisions.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Legal Assistance</h5>
+              <p class="card-text">Guidance on contracts, transfers, and regulatory compliance to ensure smooth transactions.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 bg-white">
+            <div class="card-body text-dark">
+              <h5 class="card-title">Interior Design Consultation</h5>
+              <p class="card-text">Expert advice to enhance property appeal and optimize living spaces for resale or rental.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="service.html" class="btn btn-light">Learn More</a>
+    </div>
+ 
+  </section>
+  </div>
+  <!-- ✅ Contact Form Section -->
+  <section class="py-5">
+  <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card p-4 contact-card">
+            <div id="formAlertContainer"></div>
+            <form id="contactForm" method="POST" action="https://formspree.io/f/mnnokwda" accept-charset="UTF-8">
+              <!-- Formspree hidden fields -->
+              <input type="hidden" name="_subject" value="New contact message from RealHome website">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Your name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" placeholder="Project type or subject" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" rows="6" class="form-control" placeholder="Tell me about your project..." required></textarea>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary" style="background-color:#001f3f; border:none;">Send Message</button>
+              </div>
+            </form>
+            <div class="mt-3 text-muted small"></div>
+          </div>
+        </div>
+</section>
+
+
+  
+  <!-- Footer -->
+   <footer style="background-color: rgb(6, 6, 29); text-align: center; padding: 10px 0; color: white;">
+    <p>&copy; 2025 RealHome. All rights reserved.</p>
+   </footer>
+  
+  <!-- Bottom navigation (mobile) -->
+  <nav class="bottom-nav d-lg-none" aria-label="Bottom navigation">
+    <a href="index.html" class="bn-item" data-key="home" title="Home">
+      <i class="fa fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="properties.html" class="bn-item" data-key="portfolio" title="Properties">
+      <i class="fa fa-building"></i>
+      <span>Properties</span>
+    </a>
+    <a href="service.html" class="bn-item" data-key="services" title="Services">
+      <i class="fa fa-concierge-bell"></i>
+      <span>Services</span>
+    </a>
+    <a href="about.html" class="bn-item" data-key="about" title="About">
+      <i class="fa fa-info-circle"></i>
+      <span>About</span>
+    </a>
+    <a href="contact.html" class="bn-item" data-key="contact" title="Contact">
+      <i class="fa fa-envelope"></i>
+      <span>Contact</span>
+    </a>
+  </nav>
+  
+  <!-- Font Awesome CDN (kept) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- site script for bottom nav -->
+  <script src="site.js"></script>
+  <script>
+    // Inline Formspree submit handler (same behavior as contact page)
+    (function () {
+      'use strict'
+      var form = document.getElementById('contactForm')
+      if (!form) return
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+
+        var alertContainer = document.getElementById('formAlertContainer')
+        if (alertContainer) alertContainer.innerHTML = ''
+
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated')
+          return
+        }
+
+        var submitBtn = form.querySelector('button[type="submit"]')
+        if (submitBtn) {
+          submitBtn.disabled = true
+          submitBtn.dataset.origLabel = submitBtn.textContent
+          submitBtn.textContent = 'Sending...'
+        }
+
+        var formData = new FormData(form)
+
+        fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+          .then(function (response) {
+            if (response.ok) {
+              if (alertContainer) {
+                alertContainer.innerHTML = '<div id="formAlert" class="alert alert-success" role="alert">Message sent — thank you! I will get back to you soon.</div>'
+              }
+              form.reset()
+              form.classList.remove('was-validated')
+            } else {
+              return response.json().then(function (data) {
+                var msg = 'There was a problem sending your message.'
+                if (data && data.errors) {
+                  msg = data.errors.map(function (e) { return e.message }).join('; ')
+                }
+                throw new Error(msg)
+              }).catch(function () {
+                throw new Error('There was a problem sending your message.')
+              })
+            }
+          })
+          .catch(function (err) {
+            var msg = err && err.message ? err.message : 'Oops — there was a problem sending your message. Please try again later.'
+            if (alertContainer) alertContainer.innerHTML = '<div class="alert alert-danger" role="alert">' + msg + '</div>'
+          })
+          .finally(function () {
+            if (submitBtn) {
+              submitBtn.disabled = false
+              submitBtn.textContent = submitBtn.dataset.origLabel || 'Send Message'
+            }
+          })
+      }, false)
+    })()
+  </script>
+</body>
+</html>

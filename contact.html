@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Jaggo's RealHome</title>
+    <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style.css" />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+     <link rel="stylesheet" href="css/all.min.css">
+  </head>
+  <body>
+    <!-- Navbar z-->
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: #0d1a4f;">
+      <div class="container">
+        <a class="navbar-brand text-white fw-bold" style="font-family: montserrat;" href="index.html">Jaggo's RealHome</a>
+        <button
+          class="navbar-toggler text-white"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link text-white" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="about.html">About</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="service.html">Services</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="properties.html">Properties</a></li>
+            <li class="nav-item"><a class="nav-link text-white active" href="contact.html">Contact</a></li>
+            <li class="nav-item"><a class="btn btn-light ms-3" href="get-started.html" style="font-family: montserrat">Get Started</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+     <main class="py-5" >
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card p-4 contact-card">
+            <div id="formAlertContainer"></div>
+            <form id="contactForm" method="POST" action="https://formspree.io/f/mnnokwda" accept-charset="UTF-8">
+              <!-- Formspree hidden fields -->
+              <input type="hidden" name="_subject" value="New contact message from RealHome website">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Your name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-control" placeholder="Project type or subject" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" rows="6" class="form-control" placeholder="Tell me about your project..." required></textarea>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary" style="background-color:#001f3f; border:none;">Send Message</button>
+              </div>
+            </form>
+            <div class="mt-3 text-muted small"></div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="card p-3 contact-card mb-3">
+            <h5 class="mb-2">Contact Info</h5>
+            <p ><i class="fas fa-user" style="color: #002b4f;">;</i><a href="mailto:abdullahiabdulrahmon46@gmail.com" style="color:#001f3f;">abdullahiabdulrahmon46@gmail.com</a></p>
+             <p style="color: #001f3f;"><i class="fab fa-whatsapp" style="color: #001f3f;">;</i> <a href="https://wa.me/+2348149377559" style="color: #001f3f;">+234 814 937 7559</a></p>
+          <p style="color:#001f3f;"><i class="fas fa-map-marker-alt" style="color: #001f3f;"></i>  Badagry Lagos, Nigeria</p>
+            <p style="color:#001f3f;"> <i class="fas fa-clock" style="color: #001f3f;">:</i>Mon–Fri 9:00–17:00</p>
+          </div>
+
+          <div class="card p-0 contact-card overflow-hidden">
+            <!-- lightweight map placeholder (editable) -->
+            <iframe class="map-placeholder" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Badagry+nigeria&output=embed" title="Map"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+    
+  
+
+         
+
+          
+      </div>
+    </main>
+
+    <!-- Footer -->
+   <footer style="background-color: rgb(6, 6, 29); text-align: center; padding: 10px 0; color: white;">
+    <p>&copy; 2025 RealHome. All rights reserved.</p>
+   </footer>
+    <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // set year in footer (if element present)
+      if(document.getElementById('year')) document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Bootstrap form validation
+      (function () {
+        'use strict'
+        var form = document.getElementById('contactForm')
+        if (form) {
+          form.addEventListener('submit', function (event) {
+            // Always prevent default — we'll send via fetch so we can show inline feedback
+            event.preventDefault()
+            event.stopPropagation()
+
+            var alertContainer = document.getElementById('formAlertContainer')
+            if (alertContainer) alertContainer.innerHTML = ''
+
+            // If the form is invalid, show validation UI and stop
+            if (!form.checkValidity()) {
+              form.classList.add('was-validated')
+              return
+            }
+
+            var submitBtn = form.querySelector('button[type="submit"]')
+            if (submitBtn) {
+              submitBtn.disabled = true
+              submitBtn.dataset.origLabel = submitBtn.textContent
+              submitBtn.textContent = 'Sending...'
+            }
+
+            var formData = new FormData(form)
+
+            fetch(form.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            })
+              .then(function (response) {
+                if (response.ok) {
+                  // Success — show a Bootstrap success alert and reset form
+                  if (alertContainer) {
+                    alertContainer.innerHTML = '<div id="formAlert" class="alert alert-success" role="alert">Message sent — thank you! I will get back to you soon.</div>'
+                  }
+                  form.reset()
+                  form.classList.remove('was-validated')
+                } else {
+                  // Try to parse JSON error details from Formspree
+                  return response.json().then(function (data) {
+                    var msg = 'There was a problem sending your message.'
+                    if (data && data.errors) {
+                      msg = data.errors.map(function (e) { return e.message }).join('; ')
+                    }
+                    throw new Error(msg)
+                  }).catch(function () {
+                    throw new Error('There was a problem sending your message.')
+                  })
+                }
+              })
+              .catch(function (err) {
+                var msg = err && err.message ? err.message : 'Oops — there was a problem sending your message. Please try again later.'
+                if (alertContainer) alertContainer.innerHTML = '<div class="alert alert-danger" role="alert">' + msg + '</div>'
+              })
+              .finally(function () {
+                if (submitBtn) {
+                  submitBtn.disabled = false
+                  submitBtn.textContent = submitBtn.dataset.origLabel || 'Send Message'
+                }
+              })
+          }, false)
+        }
+      })()
+    </script>
+    <!-- bottom nav markup -->
+    <nav class="bottom-nav d-lg-none" aria-label="Bottom navigation">
+      <a href="index.html" class="bn-item" data-key="home" title="Home">
+        <i class="fa fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="properties.html" class="bn-item" data-key="portfolio" title="Properties">
+        <i class="fa fa-building"></i>
+        <span>Properties</span>
+      </a>
+      <a href="service.html" class="bn-item" data-key="services" title="Services">
+        <i class="fa fa-concierge-bell"></i>
+        <span>Services</span>
+      </a>
+      <a href="about.html" class="bn-item" data-key="about" title="About">
+        <i class="fa fa-info-circle"></i>
+        <span>About</span>
+      </a>
+      <a href="contact.html" class="bn-item" data-key="contact" title="Contact">
+        <i class="fa fa-envelope"></i>
+        <span>Contact</span>
+      </a>
+    </nav>
+    <script src="site.js"></script>
+  </body>
+</html>

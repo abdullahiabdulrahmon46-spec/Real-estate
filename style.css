@@ -1,0 +1,104 @@
+.contact-hero{
+	background: linear-gradient(90deg, rgba(13,26,79,0.95), rgba(28,56,130,0.85));
+}
+body{font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;}
+.contact-hero .lead{opacity:0.95}
+.contact-info .icon{flex:0 0 28px}
+.contact-info a{color:#0d1a4f;text-decoration:none}
+.map-responsive{overflow:hidden}
+.card{border-radius:0.6rem}
+@media (max-width: 767px){
+	.contact-hero{text-align:center}
+}
+
+/* Mobile bottom navigation */
+.bottom-nav{
+	position:fixed;
+	bottom:14px;
+	left:14px;
+	right:14px;
+	z-index:1050;
+	background: rgba(255,255,255,0.98);
+	box-shadow: 0 10px 30px rgba(13,26,79,0.12);
+	border-radius: 14px;
+	display:flex;
+	justify-content:space-around;
+	align-items:center;
+	padding:.35rem .5rem;
+	backdrop-filter: blur(6px);
+	transition: transform .28s ease;
+}
+.bottom-nav.hidden{transform: translateY(120%)}
+.bottom-nav .bn-item{
+	color:#0d1a4f;
+	text-decoration:none;
+	font-size: .8rem;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	gap:3px;
+	padding:6px 8px;
+	border-radius:8px;
+	width:56px;
+	justify-content:center;
+}
+.bottom-nav .bn-item i{font-size:18px}
+.bottom-nav .bn-item span{font-size:11px}
+.bottom-nav .bn-item.active{background: linear-gradient(90deg,#18377f,#0d1a4f); color:#fff}
+.bottom-nav .bn-item.active i{color:#fff}
+
+@media(min-width:992px){.bottom-nav{display:none}}
+
+/* Make top navbar white and links dark on mobile so it's visible (matches service page) */
+@media (max-width: 991.98px) {
+	.navbar{
+		background-color: #ffffff !important;
+		transition: background .18s ease;
+	}
+	.navbar .navbar-brand,
+	.navbar .nav-link,
+	.navbar .btn{
+		color: #0d1a4f !important;
+	}
+	.navbar .nav-link.active{
+		color: #18377f !important;
+	}
+	.navbar .navbar-toggler{
+		border-color: rgba(13,26,79,0.12);
+	}
+	/* Dark hamburger icon for white background */
+	.navbar-toggler-icon{
+		background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%230d1a4f' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+	}
+}
+
+/* Mobile-friendly tweaks */
+/* Ensure quick nav buttons expand on small screens */
+#contentArea .btn-group .btn,
+#contentArea .btn-group a.btn {
+	flex: 1 1 48%;
+	margin: 0.25rem 0.25rem 0.25rem 0;
+}
+
+@media (max-width:575.98px){
+	#contentArea .btn-group .btn,
+	#contentArea .btn-group a.btn {
+		flex-basis: 100%;
+		margin-left: 0;
+	}
+}
+
+/* Make form buttons easier to tap on phones */
+.card .btn {
+	padding: .6rem .75rem;
+}
+
+/* Align account area to the right in the top navbar */
+.navbar .container > .d-flex.ms-3 { margin-left: auto; }
+
+/* Ensure transformed Get Started -> Sign out anchors look tappable on mobile */
+a.nav-link.text-start[role="button"], a.nav-link.text-start {
+	padding: .35rem .5rem;
+	border-radius: .25rem;
+}
+

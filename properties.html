@@ -238,9 +238,7 @@
   <!-- Render stored properties (added via admin) -->
   <script>
     (function () {
-      /* Fetch static properties JSON (if present on the server) and render them first.
-         This allows Netlify-hosted static properties to appear for all visitors.
-      */
+      /* Fetch static properties JSON (if present on the server) and render them first. */
       async function fetchAndRenderStaticProperties() {
         try {
           const res = await fetch('data/properties.json', { cache: 'no-store' });

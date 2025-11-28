@@ -17,16 +17,43 @@
     .form-card{max-width:900px}
     label{font-weight:600}
     .success{display:none}
-    
+
+    /* Mobile / small-screen adjustments */
+    @media (max-width: 767.98px) {
+      /* Make sidebar a top bar on mobile */
+      .sidebar{width:100%;height:auto;position:fixed;top:0;left:0;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;z-index:1050}
+      .sidebar h3{margin:0;font-size:1rem}
+      .sidebar nav{display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap}
+      /* Show nav items as icon+label stacked and scrollable */
+      .sidebar nav a{display:inline-flex;flex-direction:row;align-items:center;justify-content:center;flex:0 0 auto;padding:6px 8px;font-size:0.85rem;text-align:center;color:#cfe6ff}
+      .sidebar nav a i{display:block;font-size:1.05rem;margin-bottom:4px}
+      .sidebar nav a .nav-text{display:block;line-height:1}
+
+      /* Active / focus styles for mobile nav items */
+      .sidebar nav a.active{background:rgba(255,255,255,0.08);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);border-radius:8px}
+
+    /* stronger active indicator on desktop */
+    .sidebar a.active{background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));box-shadow: inset 4px 0 0 var(--accent);}
+      /* Main content should be full width and shifted below the top sidebar */
+      .main{margin-left:0;padding:16px;padding-top:84px}
+
+      /* Form card and images become fluid */
+      .form-card{max-width:100%;width:100%}
+      #imgPreview{max-width:100%!important;height:auto!important;display:block}
+
+      /* Tighter card padding on small screens */
+      .card.p-4{padding:16px}
+
+      /* Stack header area vertically on small widths */
+      .d-flex.justify-content-between{flex-direction:column;align-items:flex-start;gap:8px}
+    }
   </style>
 </head>
 <body>
   <aside class="sidebar">
     <h3><i class="fa fa-building"></i>  Jaggos Home</h3>
     <nav class="nav flex-column">
-      <a class="nav-link active" href="#"><i class="fa fa-plus-circle"></i> Add Property</a>
-      <a class="nav-link" href="properties.html"><i class="fa fa-list"></i> View Properties</a>
-      <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
+      <!-- All nav items removed per request; logout is appended by JS -->
     </nav>
   </aside>
 
@@ -66,7 +93,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2>Add New Property</h2>
       <div>
-        <a class="btn btn-outline-primary" href="properties.html">Open Properties</a>
+        <!-- 'Open Properties' button removed per request -->
       </div>
     </div>
 
@@ -231,6 +258,18 @@
     logoutBtn.addEventListener('click', function(e){ e.preventDefault(); sessionStorage.removeItem('adminAuthenticated'); showOverlay('login'); document.getElementById('adminContent').style.display='none'; });
     document.querySelector('.sidebar nav').appendChild(logoutBtn);
 
+    // Make sidebar links visually active when clicked (keeps mobile/desktop in sync)
+    (function attachSidebarActiveHandlers(){
+      const links = document.querySelectorAll('.sidebar nav a');
+      links.forEach(a => {
+        a.addEventListener('click', function(e){
+          // allow logout link to work normally (it already has behavior)
+          links.forEach(x => x.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+    })();
+
     // initialize authentication
     initAuth();
 
@@ -281,30 +320,51 @@
       const list = JSON.parse(localStorage.getItem('properties') || '[]');
       const container = document.getElementById('adminPropertyList');
       if (!container) return;
-      if (!list.length) { container.innerHTML = 'No properties yet.'; return; }
+      if (!list.length) {
+        container.innerHTML = '<div class="text-muted">No properties yet.</div>';
+        return;
+      }
+
+      // Render as a Bootstrap list-group (nav-like)
       container.innerHTML = '';
+      const ul = document.createElement('div');
+      ul.className = 'list-group';
+
       list.slice().reverse().forEach(prop => {
-        const wrap = document.createElement('div');
-        wrap.className = 'd-flex gap-3 align-items-start mb-3 p-2 border rounded';
+        const item = document.createElement('a');
+        item.href = '#';
+        item.className = 'list-group-item list-group-item-action d-flex align-items-start gap-3';
+        item.style.padding = '0.75rem';
+        item.setAttribute('role', 'button');
+
         const img = document.createElement('img');
-        img.style.width = '120px';
-        img.style.height = '80px';
+        img.src = prop.image || 'images/bungalow.jpg';
+        img.alt = prop.name || 'property';
+        img.style.width = '88px';
+        img.style.height = '64px';
         img.style.objectFit = 'cover';
         img.style.borderRadius = '6px';
-        img.src = prop.image || 'images/bungalow.jpg';
+
         const info = document.createElement('div');
         info.style.flex = '1';
-        info.innerHTML = `<strong>${escapeHtml(prop.name || '')}</strong> <span class="badge bg-secondary ms-2">${escapeHtml(prop.pType || prop.listingType || '')}</span>
-          <div>${escapeHtml(prop.location || '')} — ₦${escapeHtml(prop.price || '')}</div>
-          <div class="text-muted">Beds: ${escapeHtml(prop.bedrooms||'')} • Toilets: ${escapeHtml(prop.toilets||'')}</div>`;
+        info.innerHTML = `<div class="d-flex align-items-center justify-content-between">
+            <div><strong>${escapeHtml(prop.name || '')}</strong> <span class="badge bg-secondary ms-2">${escapeHtml(prop.pType || prop.listingType || '')}</span></div>
+            <small class="text-muted">₦${escapeHtml(prop.price || '')}</small>
+          </div>
+          <div class="text-muted small">${escapeHtml(prop.location || '')} — Beds: ${escapeHtml(prop.bedrooms||'')} • Toilets: ${escapeHtml(prop.toilets||'')}</div>`;
+
         const actions = document.createElement('div');
-        actions.innerHTML = `<button class="btn btn-sm btn-danger">Remove</button>`;
-        actions.querySelector('button').addEventListener('click', ()=>{ removeStoredPropertyAdmin(prop.id); });
-        wrap.appendChild(img);
-        wrap.appendChild(info);
-        wrap.appendChild(actions);
-        container.appendChild(wrap);
+        actions.className = 'ms-2';
+        actions.innerHTML = `<button class="btn btn-sm btn-danger" title="Remove property">Remove</button>`;
+        actions.querySelector('button').addEventListener('click', (e)=>{ e.preventDefault(); removeStoredPropertyAdmin(prop.id); });
+
+        item.appendChild(img);
+        item.appendChild(info);
+        item.appendChild(actions);
+        ul.appendChild(item);
       });
+
+      container.appendChild(ul);
     }
 
     function removeStoredPropertyAdmin(id) {

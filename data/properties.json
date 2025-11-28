@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Bungalow",
+    "price": "250,000,000",
+    "location": "Lagos",
+    "bedrooms": 4,
+    "toilets": 3,
+    "listingType": "sale",
+    "image": "images/bungalow.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Modern Apartment",
+    "price": "85,000,000",
+    "location": "Abuja",
+    "bedrooms": 3,
+    "toilets": 2,
+    "listingType": "sale",
+    "image": "images/villa.jpg"
+  }
+]

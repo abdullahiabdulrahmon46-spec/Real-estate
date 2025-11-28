@@ -238,6 +238,54 @@
   <!-- Render stored properties (added via admin) -->
   <script>
     (function () {
+      /* Fetch static properties JSON (if present on the server) and render them first.
+         This allows Netlify-hosted static properties to appear for all visitors.
+      */
+      async function fetchAndRenderStaticProperties() {
+        try {
+          const res = await fetch('data/properties.json', { cache: 'no-store' });
+          if (!res.ok) return;
+          const list = await res.json();
+          if (!Array.isArray(list) || !list.length) return;
+          // reuse the same rendering logic used for stored properties (append)
+          const container = document.getElementById('propertyContainer');
+          list.forEach(prop => {
+            if (!prop) return;
+            const card = document.createElement('div');
+            card.className = 'property-card';
+            card.dataset.category = (prop.listingType || '').toLowerCase().includes('rent') ? 'rent' : ((prop.listingType || '').toLowerCase().includes('sale') ? 'sale' : (prop.listingType || '').toLowerCase());
+            const imgSrc = prop.image || 'images/bungalow.jpg';
+            card.innerHTML = `
+              <div class="card-top">
+                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(prop.name || prop.title || 'Property')}">
+                <div class="property-badge">${escapeHtml(prop.listingType || 'Listing')}</div>
+                <div class="card-actions">
+                  <button class="btn btn-sm btn-light"><i class="fa fa-heart"></i></button>
+                </div>
+              </div>
+              <div class="property-info">
+                <h3>${escapeHtml(prop.name || prop.title || '')}</h3>
+                <p>${escapeHtml(prop.location || '')}</p>
+                <div class="specs">
+                  <div class="spec"><i class="fa fa-bed"></i> ${escapeHtml(prop.bedrooms || '')}</div>
+                  <div class="spec"><i class="fa fa-bath"></i> ${escapeHtml(prop.toilets || prop.bathrooms || '')}</div>
+                </div>
+                <p class="price">${prop.price ? '₦' + escapeHtml(prop.price) : ''}</p>
+              </div>
+              <div class="property-footer">
+                <div class="actions">
+                  <a href="https://wa.me/+2348149377559" class="btn btn-primary"><i class="fa fa-phone me-2"></i>Contact Agent</a>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } catch (e) {
+          // ignore fetch errors (e.g., file not present) — site still works with localStorage
+        }
+      }
+      // attempt fetch immediately so static props render before stored ones
+      fetchAndRenderStaticProperties();
       function escapeHtml(text) {
         if (text === undefined || text === null) return '';
         return String(text)

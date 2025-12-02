@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin — J Watch Zone</title>
+    <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fontawesome-free-7.0.1-web/css/all.min.css">
+    <style>
+      :root{ --gold:#f5c518; --bg:#ffffff; --text:#111111; --card:#ffffff; --muted:#6b6b6b }
+      html,body{height:100%}
+      body{margin:0;background:var(--bg);color:var(--text);font-family:montserrat}
+      a {color:inherit}
+      /* Header */
+      header.admin-header{padding:14px 20px;background:transparent;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between}
+      .brand{font-weight:800;font-size:1.05rem;color:var(--text)}
+      .brand span{color:var(--gold);margin-left:6px}
+
+      /* Layout */
+      .admin-area{display:flex;min-height:calc(100vh - 60px)}
+      .admin-sidebar{width:240px;padding:20px;border-right:1px solid rgba(0,0,0,0.06);background:var(--card)}
+      .sidebar-logo{font-weight:800;font-size:1.1rem;margin-bottom:18px;color:var(--text)}
+      .sidebar-nav{display:flex;flex-direction:column;gap:8px}
+      .sidebar-nav a{padding:10px;border-radius:8px;color:var(--muted);text-decoration:none}
+      .sidebar-nav a.active, .sidebar-nav a:hover{background:rgba(245,197,24,0.08);color:var(--gold)}
+      .sidebar-footer{margin-top:18px;color:var(--muted);font-size:0.85rem}
+
+      .admin-content{flex:1;padding:22px;background:transparent}
+      .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+      .top-actions .btn{border-radius:8px}
+
+      .stats-row{display:flex;gap:16px;margin-bottom:18px}
+      .stat-card{flex:1;background:#fff;padding:16px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+      .stat-title{color:var(--muted);font-size:0.9rem}
+      .stat-value{font-size:1.4rem;font-weight:800;color:var(--gold)}
+
+      .panel{background:transparent;margin-bottom:14px}
+      .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+      .panel-body{background:#fafafa;padding:14px;border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
+
+      .list-group-item{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:10px;margin-bottom:10px;padding:10px;color:var(--text)}
+      .product-img{height:64px;width:64px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,0.04)}
+      #imagePreview{height:80px;width:80px;object-fit:cover;border-radius:10px;display:none;border:2px solid rgba(245,197,24,0.12)}
+
+      .btn-gold{background:var(--gold);color:#000;border:none;display:inline-flex;align-items:center;gap:8px}
+      .btn-gold:focus{box-shadow:0 0 0 3px rgba(245,197,24,0.12)}
+      .btn-outline-light{display:inline-flex;align-items:center;gap:8px}
+
+      /* animations */
+      .animate-fade-in{animation:fadeInUp .36s ease forwards}
+      @keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+      .stat-value{transition:color .2s ease}
+      .list-group-item{opacity:0;transform:translateY(6px);transition:opacity .28s ease, transform .28s ease}
+      .list-group-item.animate-fade-in{opacity:1;transform:none}
+      .list-group-item:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+      .icon-small{width:18px;text-align:center}
+
+      .status-badge.pending{background:var(--gold);color:#000;padding:.35em .6em;border-radius:.35rem}
+      .status-badge.shipped{background:#28a745;color:#fff;padding:.35em .6em;border-radius:.35rem}
+
+      /* responsive */
+      @media (max-width:900px){ .admin-area{flex-direction:column}.admin-sidebar{width:100%;display:flex;flex-direction:row;justify-content:space-between;align-items:center}.sidebar-nav{flex-direction:row;gap:6px;overflow:auto} }
+    </style>
+  </head>
+  <body>
+
+    <!-- Login overlay (client-side) -->
+    <div id="adminLoginOverlay" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:2100">
+      <div style="width:360px;background:#fff;padding:22px;border-radius:12px;color:#111;box-shadow:0 12px 40px rgba(0,0,0,0.5)">
+        <h5 style="margin:0 0 6px 0">Admin Login</h5>
+        <p style="margin:0 0 12px 0;color:#555;font-size:0.95rem">Enter the admin password to continue.</p>
+        <div class="mb-2">
+          <input id="adminPasswordInput" type="password" class="form-control" placeholder="Password">
+          <div id="adminLoginMsg" style="margin-top:8px;font-size:0.9rem;color:#b23a3a;display:none"></div>
+        </div>
+        <div class="d-flex gap-2 justify-content-end">
+          <button id="adminLoginBtn" class="btn btn-sm btn-gold">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <header class="admin-header" style="background: #000; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+      <div class="brand" style="color: white;">⌚ J Watch<span>Zone</span></div>
+      <div>
+        <a href="index.html" class="btn btn-sm btn-outline-light">Store</a>
+        <button id="adminLogoutBtn" class="btn btn-sm btn-outline-warning ms-2" style="display:none">Logout</button>
+      </div>
+    </header>
+
+    <main class="admin-area">
+      <aside class="admin-sidebar">
+        <div></div>
+          <nav class="sidebar-nav">
+            <a href="#productsSection">Products</a>
+            <a href="#ordersSection">Orders</a>
+            <a href="#" id="logoutLink">Logout</a>
+          </nav>
+        </div>
+        <div class="sidebar-footer">&copy; <span id="year"></div>
+      </aside>
+
+      <section class="admin-content">
+        <div class="top-row">
+          <div>
+            <h2 style="margin:0">Admin Dashboard</h2>
+            <div style="color:var(--muted);font-size:0.9rem">Manage products and orders</div>
+          </div>
+          <div class="top-actions">
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-title">Products</div>
+            <div id="statProducts" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Orders</div>
+            <div id="statOrders" class="stat-value">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">Revenue</div>
+            <div id="statRevenue" class="stat-value">₦0</div>
+          </div>
+        </div>
+
+        <div id="productsSection" class="panel">
+          <div class="panel-header">
+            <h5 style="margin:0">Products</h5>
+            <div>
+              <button id="openAddProduct" class="btn btn-sm btn-gold"><i class="fa fa-plus icon-small"></i> Add Product</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <form id="productForm" class="row g-2 align-items-center">
+              <input id="productId" type="hidden">
+              <div class="col-md-4">
+                <input id="title" class="form-control" placeholder="Title">
+              </div>
+              <div class="col-md-2">
+                <input id="price" class="form-control" placeholder="Price">
+              </div>
+              <div class="col-md-3">
+                <input id="imageFile" type="file" accept="image/*" class="form-control form-control-sm">
+                <input id="imageData" type="hidden">
+              </div>
+              <div class="col-md-3 text-end">
+                <button id="clearForm" type="button" class="btn btn-sm btn-outline-light">Clear</button>
+                <button id="saveProduct" type="submit" class="btn btn-sm btn-gold">Save</button>
+              </div>
+              <div class="col-12 mt-2">
+                <textarea id="desc" class="form-control" placeholder="Description"></textarea>
+              </div>
+              <div class="col-12 mt-2">
+                <img id="imagePreview" alt="preview">
+              </div>
+            </form>
+
+            <div class="mt-3">
+              <div class="d-flex justify-content-between mb-2">
+                <div><strong>Products</strong></div>
+                <div>
+                  <button id="exportProducts" class="btn btn-sm btn-outline-light"><i class="fa fa-file-export icon-small"></i> Export</button>
+                  <button id="clearProducts" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash icon-small"></i> Clear</button>
+                  <input id="importFile" type="file" accept="application/json" style="display:none">
+                  <button id="importBtn" class="btn btn-sm btn-outline-light"><i class="fa fa-file-import icon-small"></i> Import</button>
+                </div>
+              </div>
+              <div id="productsList" class="list-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="ordersSection" class="panel">
+          <div class="panel-header">
+            <h5 style="margin:0">Orders</h5>
+            <div>
+              <button id="exportOrders" class="btn btn-sm btn-outline-light"><i class="fa fa-file-export icon-small"></i> Export Orders</button>
+              <button id="clearOrders" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash icon-small"></i> Clear Orders</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="ordersList" class="list-group"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // localStorage keys
+      const storageKey = 'products';
+      const ordersKey = 'orders';
+
+      // helper
+      function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+      function loadProducts(){ return JSON.parse(localStorage.getItem(storageKey) || '[]'); }
+      function saveProducts(list){ localStorage.setItem(storageKey, JSON.stringify(list)); }
+
+      function renderProducts(){
+        const list = loadProducts();
+        const container = document.getElementById('productsList'); container.innerHTML = '';
+        if(!list.length){ container.innerHTML = '<div class="p-3">No products yet.</div>'; updateStats(); return; }
+        list.forEach((p,i) => {
+          const el = document.createElement('div'); el.className = 'list-group-item d-flex align-items-center justify-content-between';
+          el.innerHTML = `
+            <div class="d-flex align-items-center gap-3">
+              <img src="${p.image||'images/luxury.jpg'}" class="product-img" alt="">
+              <div>
+                <div style="font-weight:700">${p.title}</div>
+                <div style="color:var(--muted);font-size:0.9rem">${p.desc||''}</div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div style="font-weight:800">${p.price}</div>
+              <div class="mt-2">
+                <button class="btn btn-sm btn-outline-light me-1" onclick="editProduct('${p.id}')"><i class='fa fa-pen icon-small'></i> Edit</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct('${p.id}')"><i class='fa fa-trash icon-small'></i> Delete</button>
+              </div>
+            </div>`;
+          container.appendChild(el);
+          // staggered entrance
+          setTimeout(()=> el.classList.add('animate-fade-in'), i * 60);
+        });
+        updateStats();
+      }
+
+      function addOrUpdateProduct(e){
+        e && e.preventDefault();
+        const id = document.getElementById('productId').value;
+        const title = document.getElementById('title').value.trim();
+        const price = document.getElementById('price').value.trim();
+        const image = document.getElementById('imageData').value.trim();
+        const desc = document.getElementById('desc').value.trim();
+        if(!title){ alert('Title required'); return; }
+        const list = loadProducts();
+        if(id){ const idx = list.findIndex(x=>x.id===id); if(idx>-1){ list[idx] = {...list[idx], title, price, image, desc}; } }
+        else { list.unshift({id:uid(), title, price, image, desc}); }
+        saveProducts(list); renderProducts(); resetForm();
+      }
+
+      function editProduct(id){ const list = loadProducts(); const p = list.find(x=>x.id===id); if(!p) return; document.getElementById('productId').value = p.id; document.getElementById('title').value = p.title; document.getElementById('price').value = p.price; document.getElementById('imageData').value = p.image||''; document.getElementById('desc').value = p.desc||''; const prev=document.getElementById('imagePreview'); if(p.image){ prev.src=p.image; prev.style.display='block'; } else prev.style.display='none'; window.scrollTo({top:0,behavior:'smooth'}); }
+
+      function deleteProduct(id){ if(!confirm('Delete product?')) return; const list = loadProducts().filter(x=>x.id!==id); saveProducts(list); renderProducts(); }
+
+      function resetForm(){ document.getElementById('productForm').reset(); document.getElementById('productId').value=''; document.getElementById('imageData').value=''; document.getElementById('imagePreview').style.display='none'; }
+
+      // image upload -> dataURL
+      document.getElementById('imageFile').addEventListener('change', (e)=>{
+        const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ()=>{ document.getElementById('imageData').value = reader.result; const prev=document.getElementById('imagePreview'); prev.src = reader.result; prev.style.display='block'; }; reader.readAsDataURL(f);
+      });
+
+      // export/import
+      function exportProducts(){ const data = loadProducts(); const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='products.json'; a.click(); URL.revokeObjectURL(url); }
+      function importProductsFile(file){ const reader = new FileReader(); reader.onload = ()=>{ try{ const data = JSON.parse(reader.result); if(Array.isArray(data)){ saveProducts(data); renderProducts(); alert('Imported products'); } else alert('Invalid JSON'); }catch(e){ alert('Invalid JSON file'); } }; reader.readAsText(file); }
+
+      // orders
+      function loadOrders(){ return JSON.parse(localStorage.getItem(ordersKey) || '[]'); }
+      function saveOrders(list){ localStorage.setItem(ordersKey, JSON.stringify(list)); }
+      function renderOrders(){
+        const list = loadOrders(); const container = document.getElementById('ordersList'); container.innerHTML='';
+        if(!list.length){ container.innerHTML='<div class="p-3">No orders found.</div>'; updateStats(); return; }
+        list.forEach((o,i)=>{
+          const el=document.createElement('div'); el.className='list-group-item';
+          el.innerHTML = `
+          <div class="d-flex justify-content-between">
+            <div>
+              <div style="font-weight:700">Order #${o.id||o.orderId||'N/A'}</div>
+              <div style="color:var(--muted);font-size:0.9rem">${o.customerName||o.name||''} • ${o.total||o.amount||''}</div>
+              <div style="margin-top:6px">${(o.items||[]).map(i=>i.title+' x'+(i.qty||1)).join(', ')}</div>
+            </div>
+            <div class="text-end">
+              <div><span class="badge ${o.status==='shipped'?'shipped':'pending'} status-badge ${o.status==='shipped'?'shipped':'pending'}">${o.status||'pending'}</span></div>
+              <div class="mt-2">
+                <button class="btn btn-sm btn-outline-light" onclick="markShipped('${o.id||o.orderId}')"><i class='fa fa-truck icon-small'></i> Mark Shipped</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="removeOrder('${o.id||o.orderId}')"><i class='fa fa-trash icon-small'></i> Delete</button>
+              </div>
+            </div>
+          </div>`;
+          container.appendChild(el);
+          setTimeout(()=> el.classList.add('animate-fade-in'), i*70);
+        });
+        updateStats();
+      }
+
+      function markShipped(id){ const list = loadOrders(); const idx = list.findIndex(o=> (o.id||o.orderId)==id); if(idx>-1){ list[idx].status='shipped'; saveOrders(list); renderOrders(); } }
+      function removeOrder(id){ if(!confirm('Delete order?')) return; const list = loadOrders().filter(o=> (o.id||o.orderId)!=id); saveOrders(list); renderOrders(); }
+      function exportOrders(){ const data = loadOrders(); const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='orders.json'; a.click(); URL.revokeObjectURL(url); }
+
+      // UI wiring
+      document.getElementById('productForm').addEventListener('submit', addOrUpdateProduct);
+      document.getElementById('clearForm').addEventListener('click', resetForm);
+      document.getElementById('exportProducts').addEventListener('click', exportProducts);
+      document.getElementById('importBtn').addEventListener('click', ()=>document.getElementById('importFile').click());
+      document.getElementById('importFile').addEventListener('change', (e)=>{ if(e.target.files[0]) importProductsFile(e.target.files[0]); e.target.value=''; });
+      document.getElementById('clearProducts').addEventListener('click', ()=>{ if(confirm('Clear all products?')){ localStorage.removeItem(storageKey); renderProducts(); } });
+      document.getElementById('exportOrders').addEventListener('click', exportOrders);
+      document.getElementById('clearOrders').addEventListener('click', ()=>{ if(confirm('Clear all orders?')){ localStorage.removeItem(ordersKey); renderOrders(); } });
+      document.getElementById('importFile').addEventListener('change', ()=>{});
+
+      // stats
+      // animate numeric stat changes
+      function animateCount(el, to, formatter){
+        const start = Number(el.dataset.prev || el.textContent.replace(/[^0-9.-]/g,'' ) || 0);
+        const duration = 600; let startTime = null;
+        function step(ts){ if(!startTime) startTime = ts; const progress = Math.min((ts-startTime)/duration, 1); const cur = Math.floor(start + (to-start)*progress); el.textContent = formatter ? formatter(cur) : cur; if(progress < 1) requestAnimationFrame(step); else el.dataset.prev = to; }
+        requestAnimationFrame(step);
+      }
+
+      function updateStats(){
+        const p = loadProducts(); const o = loadOrders();
+        animateCount(document.getElementById('statProducts'), p.length);
+        animateCount(document.getElementById('statOrders'), o.length);
+        const revenue = o.reduce((s,x)=> s + (Number(x.total||x.amount||0)||0), 0);
+        animateCount(document.getElementById('statRevenue'), revenue, v=> v ? '₦'+v : '₦0');
+      }
+
+      // init
+      renderProducts(); renderOrders(); document.getElementById('year').textContent = new Date().getFullYear();
+
+      // --- Admin login (client-side) ---
+      const ADMIN_PASSWORD = '123456789'; // change locally if you like
+      const overlay = document.getElementById('adminLoginOverlay');
+      const loginBtn = document.getElementById('adminLoginBtn');
+      const passInput = document.getElementById('adminPasswordInput');
+      const loginMsg = document.getElementById('adminLoginMsg');
+      const logoutBtn = document.getElementById('adminLogoutBtn');
+
+      function showOverlay(){ overlay.style.display='flex'; document.body.style.overflow='hidden'; passInput.focus(); }
+      function hideOverlay(){ overlay.style.display='none'; document.body.style.overflow='auto'; }
+      function showLoginError(txt){ loginMsg.style.display='block'; loginMsg.textContent = txt; }
+      function clearLoginError(){ loginMsg.style.display='none'; loginMsg.textContent = ''; }
+
+      function setLoggedIn(){ sessionStorage.setItem('adminAuth','1'); hideOverlay(); logoutBtn.style.display='inline-block'; }
+      function setLoggedOut(){ sessionStorage.removeItem('adminAuth'); showOverlay(); logoutBtn.style.display='none'; passInput.value=''; clearLoginError(); }
+
+      if(sessionStorage.getItem('adminAuth') === '1'){ hideOverlay(); logoutBtn.style.display='inline-block'; } else { showOverlay(); }
+
+      let loginBusy = false;
+      async function handleLogin(){ if(loginBusy) return; const v = (passInput.value||'').trim(); if(!v){ showLoginError('Please enter the admin password'); passInput.focus(); return; } loginBusy = true; loginBtn.disabled = true; clearLoginError(); await new Promise(r=>setTimeout(r,200)); if(v === ADMIN_PASSWORD){ setLoggedIn(); passInput.value=''; } else { showLoginError('Incorrect password'); passInput.select(); passInput.focus(); } loginBusy = false; loginBtn.disabled = false; }
+
+      loginBtn.addEventListener('click', handleLogin);
+      passInput.addEventListener('keyup', (e)=>{ if(e.key === 'Enter') handleLogin(); });
+      logoutBtn.addEventListener('click', ()=>{ if(confirm('Logout from admin?')) setLoggedOut(); });
+
+      // wire sidebar links
+      const logoutLink = document.getElementById('logoutLink'); if(logoutLink) logoutLink.addEventListener('click', (e)=>{ e.preventDefault(); if(confirm('Logout from admin?')) setLoggedOut(); });
+      const exportProductsLink = document.getElementById('exportProductsLink'); if(exportProductsLink) exportProductsLink.addEventListener('click', (e)=>{ e.preventDefault(); exportProducts(); });
+      // exportTopBtn removed (top export button was removed from layout)
+
+      // expose helpers for inline onclick
+      window.editProduct = editProduct; window.deleteProduct = deleteProduct; window.markShipped = markShipped; window.removeOrder = removeOrder;
+    </script>
+  </body>
+</html>

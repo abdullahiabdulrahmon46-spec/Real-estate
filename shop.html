@@ -3,207 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Shop — J Watch Zone</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+    <style>
+      .banner{ text-align:center; background-color:gold; padding:50px; }
+      .badge-new{ background:#f5c518; color:#000; font-weight:700; margin-left:8px; }
+    </style>
 </head>
 
 <body>
-    <header>
+  <header>
     <nav class="navbar" style="display:flex; justify-content:flex-start; align-items:center; gap:1.5rem; padding:1rem; width:100%;">
         <div class="logo" style="font-weight:700;">⌚ J Watch <span>Zone</span></div>
-
         <ul class="nav-links" style="list-style:none; display:flex; gap:1rem; margin:0; padding:0; font-size:large;">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="shop.html">Shop</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html" class="active">Shop</a></li>
             <li><a href="delivery.html">Delivery</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
-
         <div class="nav-actions" style="margin-left:auto; display:flex; gap:1rem; align-items:center;">
             <a href="cart.html" class="cart position-relative" aria-label="Shopping cart" style="font-size:1rem; color:#fff; background:#000; padding:8px 12px; border-radius:6px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,0.15); box-shadow:0 4px 10px rgba(0,0,0,0.12); z-index:1000;">
               🛒 <span style="font-weight:700;">Cart</span>
               <span id="cartCount" class="badge bg-danger position-absolute top-0 start-100 translate-middle" style="font-size:0.9rem;">0</span>
             </a>
-           
         </div>
     </nav>
-</header>
-<div class="banner" style="text-align: center; background-color: gold; padding: 50px;">
-    
-    <div class="banner-content">
+  </header>
 
-        <!-- Bottom navigation (mobile only) -->
-        <style>
-          .bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#111;color:#fff;display:flex;justify-content:space-around;padding:10px 0;z-index:1000}
-          .bottom-nav a{color:#fff;text-decoration:none;font-weight:600;display:flex;flex-direction:column;align-items:center;font-size:0.9rem}
-          @media (min-width:768px){
-            .bottom-nav{display:none !important}
-          }
-          @media (max-width:767px){
-            .bottom-nav{display:flex}
-          }
-        </style>
-        <nav class="bottom-nav">
-          <a href="index.html"><span style="font-size:1.1rem">🏠</span><span>Home</span></a>
-          <a href="shop.html"><span style="font-size:1.1rem">🛍️</span><span>Shop</span></a>
-          <a href="cart.html"><span style="font-size:1.1rem">🛒</span><span>Cart</span></a>
-          <a href="delivery.html"><span style="font-size:1.1rem">🚚</span><span>Delivery</span></a>
-          <a href="contact.html"><span style="font-size:1.1rem">📞</span><span>Contact</span></a>
-        </nav>
-      <h1 style="font-size: 2.5rem; font-weight: bolder;">
-        "Style begins here. Discover pieces that define you."
-      </h1>
-      <p style="font-size: x-large; ">"Quality you wear, confidence you feel." </p>
-    
+  <div class="banner">
+      <h1 style="font-size: 2.5rem; font-weight: bolder;">Style begins here. Discover pieces that define you.</h1>
+      <p style="font-size: x-large;">Quality you wear, confidence you feel.</p>
+  </div>
 
-    </div>
-    </div>
-      <!-- Quick Preview Modal -->
-      <div class="modal fade" id="quickPreviewModal" tabindex="-1" aria-labelledby="quickPreviewLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="quickPreviewLabel">Product Preview</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <img id="previewImg" src="" alt="Preview" class="img-fluid mb-3" style="max-height:400px; object-fit:cover; width:100%;">
-              <h2 id="previewTitle" style="font-size:2.2rem; font-weight:bold;"></h2>
-              <div class="text-primary fw-bold mb-3" id="previewPrice" style="font-size:1.7rem;"></div>
-              <p class="text-muted" id="previewDesc" style="font-size:1.25rem;"></p>
-            </div>
-          </div>
+  <!-- Quick Preview Modal -->
+  <div class="modal fade" id="quickPreviewModal" tabindex="-1" aria-labelledby="quickPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="quickPreviewLabel">Product Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="previewImg" src="" alt="Preview" class="img-fluid mb-3" style="max-height:400px; object-fit:cover; width:100%;">
+          <h2 id="previewTitle" style="font-size:2.2rem; font-weight:bold;"></h2>
+          <div class="text-primary fw-bold mb-3" id="previewPrice" style="font-size:1.7rem;"></div>
+          <p class="text-muted" id="previewDesc" style="font-size:1.25rem;"></p>
         </div>
       </div>
-    <div class="container" style="margin-top: 20px;">
-        <div class="row">
-              <!-- Card 1 -->
-            <div class="col-md-4">
-                 <div class="card w-100 shadow-sm">
-            <img src="images/water  proof quartz.jpg" class="card-img-top" alt="Classic Wrist Watch" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h5 class="card-title">
-               Water proof Watch        
-
-              </h5>
-              <p class="card-text text-muted small">Stainless steel, water-resistant</p>
-              <div class="text-primary fw-bold mb-2">₦50,000</div>
-              <div class="d-flex gap-2">
-          <a href="cart.html"
-              class="btn btn-sm btn-primary rounded-pill d-inline-flex align-items-center gap-2 shadow-sm"
-              role="button" aria-label="Add Classic Wrist Watch to cart"
-              style="padding:0.28rem 0.9rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.12); background-color: #000; border: none; ">
-            🛒 <span class="d-none d-sm-inline">Add to Cart</span>
-          </a>
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#quickPreviewModal" data-title="Water proof" data-price="₦50,000" data-desc="Stainless steel, water-resistant" data-img="images/water  proof quartz.jpg">Quick Preview</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-                    <div class="col-md-4">
-                 <div class="card w-100 shadow-sm">
-            <img src="images/Mens Watch Chronograph.jpg" class="card-img-top" alt="Classic Wrist Watch" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h5 class="card-title">Classic Wrist Watch</h5>
-              <p class="card-text text-muted small">Stainless steel, water-resistant</p>
-              <div class="text-primary fw-bold mb-2">₦150,000</div>
-              <div class="d-flex gap-2">
-          <a href="cart.html"
-              class="btn btn-sm btn-primary rounded-pill d-inline-flex align-items-center gap-2 shadow-sm"
-              role="button" aria-label="Add Classic Wrist Watch to cart"
-              style="padding:0.28rem 0.9rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.12); background-color: #000; border: none; ">
-            🛒 <span class="d-none d-sm-inline">Add to Cart</span>
-          </a>
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#quickPreviewModal" data-title="Classic Wrist Watch" data-price="₦150,000" data-desc="Stainless steel, water-resistant" data-img="images/Mens Watch Chronograph.jpg">Quick Preview</button>
-              </div>
-            </div>
-          </div>
-        </div>
-                    <div class="col-md-4">
-                 <div class="card w-100 shadow-sm">
-            <img src="images/luxury.jpg" class="card-img-top" alt="Classic Wrist Watch" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h5 class="card-title">Classic Wrist Watch</h5>
-              <p class="card-text text-muted small">Stainless steel, water-resistant</p>
-              <div class="text-primary fw-bold mb-2">₦90,000</div>
-              <div class="d-flex gap-2">
-          <a href="cart.html"
-              class="btn btn-sm btn-primary rounded-pill d-inline-flex align-items-center gap-2 shadow-sm"
-              role="button" aria-label="Add Classic Wrist Watch to cart"
-              style="padding:0.28rem 0.9rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.12); background-color: #000; border: none; ">
-            🛒 <span class="d-none d-sm-inline">Add to Cart</span>
-          </a>
-          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#quickPreviewModal" data-title="Classic Wrist Watch" data-price="₦90,000" data-desc="Stainless steel, water-resistant" data-img="images/luxury.jpg">Quick Preview</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
- 
-
-
-              
-
-            </div>
-        </div>
     </div>
-    
+  </div>
 
-<script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var previewModal = document.getElementById('quickPreviewModal');
-  var previewTitle = document.getElementById('previewTitle');
-  var previewPrice = document.getElementById('previewPrice');
-  var previewDesc = document.getElementById('previewDesc');
-  var previewImg = document.getElementById('previewImg');
+  <div class="container" style="margin-top: 20px;">
+    <div class="row" id="productsRow"></div>
+  </div>
 
-  document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#quickPreviewModal"]').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      previewTitle.textContent = btn.getAttribute('data-title') || '';
-      previewPrice.textContent = btn.getAttribute('data-price') || '';
-      previewDesc.textContent = btn.getAttribute('data-desc') || '';
-      previewImg.src = btn.getAttribute('data-img') || '';
-    });
-  });
+  <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var previewTitle = document.getElementById('previewTitle');
+    var previewPrice = document.getElementById('previewPrice');
+    var previewDesc = document.getElementById('previewDesc');
+    var previewImg = document.getElementById('previewImg');
 
-  // Add to Cart functionality (works for all products)
-  document.querySelectorAll('a[href="cart.html"], a[aria-label*="Add"]').forEach(function(btn) {
-    if (btn.classList.contains('btn-primary')) {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var card = btn.closest('.card');
-        var name = card.querySelector('.card-title').textContent.trim() || 'Product';
-        var priceText = card.querySelector('.text-primary').textContent.replace(/[^\d]/g, '');
-        var price = parseInt(priceText) || 0;
-        var desc = card.querySelector('.card-text').textContent.trim();
-        var img = card.querySelector('img').getAttribute('src');
-        var cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        // Check if already in cart
-        var found = cart.find(item => item.name === name && item.price === price && item.img === img);
-        if (found) {
-          found.qty += 1;
-        } else {
-          cart.push({ name, price, desc, img, qty: 1 });
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        window.location.href = 'cart.html';
+    function setupQuickPreviewBindings(){
+      document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#quickPreviewModal"]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          previewTitle.textContent = btn.getAttribute('data-title') || '';
+          previewPrice.textContent = btn.getAttribute('data-price') || '';
+          previewDesc.textContent = btn.getAttribute('data-desc') || '';
+          previewImg.src = btn.getAttribute('data-img') || '';
+        });
       });
     }
-  });
 
-   // Show cart item count in navbar
-   function updateCartCount() {
-     var cart = JSON.parse(localStorage.getItem('cart') || '[]');
-     var count = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
-     var badge = document.getElementById('cartCount');
-     if (badge) badge.textContent = count;
-   }
-   updateCartCount();
-});
-</script>
+    function setupAddToCartBindings(){
+      document.querySelectorAll('.add-to-cart').forEach(function(btn) {
+        if (btn.dataset.bound === '1') return; btn.dataset.bound = '1';
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var card = btn.closest('.card');
+          var name = card.querySelector('.card-title').textContent.trim() || 'Product';
+          var priceText = card.querySelector('.text-primary').textContent.replace(/[^\d]/g, '');
+          var price = parseInt(priceText) || 0;
+          var desc = card.querySelector('.card-text').textContent.trim();
+          var img = card.querySelector('img').getAttribute('src');
+          var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          var found = cart.find(function(item){ return item.name === name && item.price === price && item.img === img; });
+          if (found) found.qty += 1; else cart.push({ name, price, desc, img, qty: 1 });
+          localStorage.setItem('cart', JSON.stringify(cart));
+          window.location.href = 'cart.html';
+        });
+      });
+    }
+
+    function updateCartCount() {
+      var cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      var count = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
+      var badge = document.getElementById('cartCount'); if (badge) badge.textContent = count;
+    }
+
+    function renderShopProducts(){
+      var row = document.getElementById('productsRow'); row.innerHTML = '';
+      var products = JSON.parse(localStorage.getItem('products') || '[]');
+      var defaults = [
+        { title: 'Water proof Watch', price: '₦50,000', desc: 'Stainless steel, water-resistant', image: 'images/water  proof quartz.jpg' },
+        { title: 'Classic Wrist Watch', price: '₦150,000', desc: 'Stainless steel, water-resistant', image: 'images/Mens Watch Chronograph.jpg' },
+        { title: 'Classic Wrist Watch', price: '₦90,000', desc: 'Stainless steel, water-resistant', image: 'images/luxury.jpg' }
+      ];
+      // Merge admin-saved products with defaults. Admin products appear first; defaults appended if not duplicated
+      var list = [];
+      if (products && products.length) {
+        var adminList = products;
+        var extras = defaults.filter(function(d){
+          return !adminList.some(function(p){ return (String(p.title||'').trim() === String(d.title||'').trim()) && (String(p.price||'').trim() === String(d.price||'').trim()); });
+        });
+        list = adminList.concat(extras);
+      } else {
+        list = defaults;
+      }
+
+      list.forEach(function(p){
+        var img = p.image || p.img || p.imageUrl || 'images/luxury.jpg';
+        var title = p.title || p.name || 'Product';
+        var price = p.price || p.priceText || '₦0';
+        var desc = p.desc || p.description || '';
+        var isAdmin = !!p.id;
+        var badgeHTML = isAdmin ? '<span class="badge badge-new">NEW</span>' : '';
+        var col = document.createElement('div'); col.className = 'col-md-4 mb-4';
+        col.innerHTML = `
+          <div class="card w-100 shadow-sm">
+            <img src="${img}" class="card-img-top" alt="${title}" style="height:220px; object-fit:cover;">
+            <div class="card-body">
+              <h5 class="card-title">${title} ${badgeHTML}</h5>
+              <p class="card-text text-muted small">${desc}</p>
+              <div class="text-primary fw-bold mb-2">${price}</div>
+              <div class="d-flex gap-2">
+                <a href="cart.html" class="btn btn-sm btn-primary rounded-pill d-inline-flex align-items-center gap-2 shadow-sm add-to-cart" role="button" aria-label="Add ${title} to cart" style="padding:0.28rem 0.9rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.12); background-color: #000; border: none; ">🛒 <span class="d-none d-sm-inline">Add to Cart</span></a>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#quickPreviewModal" data-title="${title}" data-price="${price}" data-desc="${desc}" data-img="${img}">Quick Preview</button>
+              </div>
+            </div>
+          </div>`;
+        row.appendChild(col);
+      });
+      setupQuickPreviewBindings(); setupAddToCartBindings(); updateCartCount();
+    }
+
+    renderShopProducts();
+  });
+  </script>
 </body>
-</html></div>
+</html>
